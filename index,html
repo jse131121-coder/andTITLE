@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ENT PORTAL</title>
+<link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+</head>
+<body>
+
+<div id="splash">ENT</div>
+
+<div id="loginPage" class="page">
+ <h2>INTERNAL LOGIN</h2>
+ <input id="companyCode" placeholder="회사 코드">
+ <input id="username" placeholder="이름">
+ <input type="file" id="profileImg">
+ <button onclick="login()">입장</button>
+</div>
+
+<div id="mainPage" class="page">
+
+<header class="top">
+ <span>ENT PORTAL</span>
+ <span id="adminBadge"></span>
+</header>
+
+<section id="home" class="tab active">
+ <div class="widget">
+  <div>접속자 <span id="onlineCount">0</span></div>
+  <div>메시지 <span id="msgCount">0</span></div>
+ </div>
+ <h3>공지</h3>
+ <div id="noticeList"></div>
+</section>
+
+<section id="chat" class="tab">
+ <select id="roomSelect" onchange="switchRoom()">
+  <option value="all">전체 채팅</option>
+  <option value="teamA">Team A</option>
+  <option value="teamB">Team B</option>
+ </select>
+
+ <div id="chatBox"></div>
+ <div class="chatInput">
+  <input id="chatMsg" placeholder="메시지">
+  <button onclick="sendChat()">전송</button>
+ </div>
+
+ <h4>DM</h4>
+ <select id="dmSelect"></select>
+ <button onclick="openDM()">DM 열기</button>
+</section>
+
+<section id="community" class="tab">
+ <textarea id="postInput" placeholder="게시글"></textarea>
+ <button onclick="addPost()">등록</button>
+ <div id="postList"></div>
+</section>
+
+<section id="diary" class="tab">
+ <textarea id="diaryInput" placeholder="연습 일기"></textarea>
+ <button onclick="saveDiary()">저장</button>
+ <div id="diaryList"></div>
+</section>
+
+<section id="schedule" class="tab">
+ <input id="scheduleDate" type="date">
+ <input id="scheduleText" placeholder="스케줄 내용">
+ <button onclick="addSchedule()">추가</button>
+ <div id="scheduleList"></div>
+</section>
+
+<section id="admin" class="tab">
+ <h3>관리자 패널</h3>
+ <textarea id="noticeInput" placeholder="공지"></textarea>
+ <button onclick="addNotice()">공지 등록</button>
+ <h4>유저 관리</h4>
+ <div id="userList"></div>
+ <h4>로그 기록</h4>
+ <div id="logList"></div>
+</section>
+
+<nav class="bottomNav">
+ <button onclick="openTab('home')">🏠</button>
+ <button onclick="openTab('chat')">💬<span id="badge">0</span></button>
+ <button onclick="openTab('community')">📰</button>
+ <button onclick="openTab('diary')">📓</button>
+ <button onclick="openTab('schedule')">📅</button>
+ <button onclick="openTab('admin')">⚙</button>
+</nav>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
+
+
+
