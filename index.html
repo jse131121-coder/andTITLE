@@ -3,294 +3,306 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>ENT INTERNAL APP</title>
-<meta name="theme-color" content="#7a1f2b">
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ENT Internal App</title>
 <style>
-:root{--wine:#7a1f2b;--light:#ffb3b3;--bg:#fff5f5}
-*{box-sizing:border-box}
-body{margin:0;font-family:system-ui;background:var(--bg)}
+:root{
+ --light-red:#ffb3b3;
+ --wine:#7b1e2b;
+ --white:#ffffff;
+}
+*{box-sizing:border-box;font-family:system-ui, sans-serif;}
+body{margin:0;background:var(--light-red);}
 
-/* Splash */
-#splash{position:fixed;inset:0;background:linear-gradient(135deg,#7a1f2b,#ffb3b3);color:white;display:flex;align-items:center;justify-content:center;font-size:42px;font-weight:800;z-index:999;animation:fadeout 1s ease forwards;animation-delay:1.2s}
-@keyframes fadeout{to{opacity:0;pointer-events:none}}
+#loginScreen{
+position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+background:linear-gradient(135deg,var(--light-red),var(--wine));
+}
 
-/* Pages */
-.page{display:none;height:100vh}
-.page.active{display:block;animation:fadein .4s ease}
-@keyframes fadein{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.login-box{
+background:white;
+padding:24px;
+width:90%;
+max-width:360px;
+border-radius:18px;
+box-shadow:0 10px 30px rgba(0,0,0,.2);
+animation:pop .6s ease;
+}
 
-/* Login */
-#login{display:flex;flex-direction:column;gap:12px;align-items:center;justify-content:center}
-#login input,#login select,#login button{width:75%;padding:14px;border-radius:12px;border:1px solid #ddd}
-#login button{background:var(--wine);color:white;border:none;font-weight:700}
+@keyframes pop{
+from{transform:scale(.8);opacity:0}
+to{transform:scale(1);opacity:1}
+}
 
-/* Header */
-.top{background:var(--wine);color:white;padding:12px;display:flex;justify-content:space-between;align-items:center}
+.login-box h2{text-align:center;color:var(--wine)}
+.login-box input,select{
+width:100%;
+padding:12px;
+margin:8px 0;
+border-radius:10px;
+border:1px solid #ddd;
+}
+.login-box button{
+width:100%;
+padding:12px;
+border:none;
+border-radius:12px;
+background:var(--wine);
+color:white;
+font-weight:bold;
+}
 
-/* Tabs */
-.tab{display:none;padding:10px;height:calc(100vh - 120px);overflow-y:auto}
-.tab.active{display:block}
+#app{display:none;height:100vh;display:flex;flex-direction:column;}
 
-/* Bottom Nav */
-.bottom{position:fixed;bottom:0;width:100%;display:flex;border-top:1px solid #ddd;background:white}
-.bottom button{flex:1;border:none;background:white;padding:10px;font-size:18px}
+header{
+background:var(--wine);
+color:white;
+padding:14px;
+text-align:center;
+font-weight:bold;
+}
 
-/* Widgets */
-.widget{display:flex;gap:10px}
-.widget div{background:white;padding:10px;border-radius:12px;box-shadow:0 4px 10px rgba(0,0,0,.05)}
+nav{
+display:flex;
+background:white;
+}
+nav button{
+flex:1;
+padding:10px;
+border:none;
+background:white;
+}
+nav button.active{background:var(--light-red)}
 
-/* Chat */
-#chatBox{height:72%;overflow-y:auto}
-.bubble{max-width:75%;padding:10px;margin:6px;border-radius:14px;animation:pop .2s ease}
-@keyframes pop{from{transform:scale(.95);opacity:.5}to{transform:scale(1);opacity:1}}
-.me{background:var(--wine);color:white;margin-left:auto}
-.other{background:#ffe0e0}
-.time{font-size:10px;color:#444}
-.avatar{width:26px;height:26px;border-radius:50%;vertical-align:middle;margin-right:6px}
+section{flex:1;overflow:auto;padding:12px;display:none;}
+section.active{display:block}
 
-.inputBar{display:flex;gap:6px}
-.inputBar input{flex:1;padding:12px;border-radius:10px;border:1px solid #ddd}
-.inputBar button{background:var(--wine);color:white;border:none;padding:12px;border-radius:10px}
+.chat-box{display:flex;flex-direction:column;gap:8px}
 
-/* Cards */
-.card{background:white;padding:12px;border-radius:12px;margin-top:8px;box-shadow:0 4px 10px rgba(0,0,0,.05)}
+.bubble{
+max-width:70%;
+padding:10px 12px;
+border-radius:16px;
+animation:fade .3s ease;
+}
 
-.badge{background:red;color:white;border-radius:20px;padding:2px 8px;font-size:12px}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1}}
 
-.calendarDay{background:white;padding:10px;border-radius:10px;margin:6px 0}
+.me{align-self:flex-end;background:var(--wine);color:white}
+.other{align-self:flex-start;background:white;border:1px solid #ddd}
 
-.adminBtn{background:var(--wine);color:white;border:none;padding:6px 10px;border-radius:8px}
+.input-bar{display:flex;gap:6px;margin-top:8px}
+.input-bar input{flex:1;padding:10px;border-radius:10px;border:1px solid #ccc}
+.input-bar button{padding:10px;border:none;border-radius:10px;background:var(--wine);color:white}
 
-.fileItem img{max-width:100%;border-radius:10px;margin-top:6px}
-</style>
+.post{
+background:white;
+border-radius:12px;
+padding:12px;
+margin-bottom:10px;
+animation:fade .3s ease;
+}
+
+.file-item{
+background:white;
+padding:10px;
+border-radius:10px;
+margin-bottom:8px;
+display:flex;
+justify-content:space-between;
+}
+
+.badge{
+font-size:12px;
+background:var(--light-red);
+padding:3px 6px;
+border-radius:6px;
+} </style>
 
 </head>
 <body>
 
-<div id="splash">ENT</div>
-
 <!-- LOGIN -->
 
-<div id="login" class="page active">
-<h2>ENT INTERNAL LOGIN</h2>
-<input id="code" placeholder="회사 코드">
-<input id="name" placeholder="이름">
-<select id="rank">
-<option value="trainee">연습생</option>
-<option value="artist">아티스트</option>
-<option value="manager">매니저</option>
-</select>
-<input type="file" id="img">
-<button onclick="login()">ENTER</button>
+<div id="loginScreen">
+ <div class="login-box">
+  <h2>ENT LOGIN</h2>
+  <input id="name" placeholder="이름">
+  <input id="code" placeholder="접속 코드" type="password">
+  <select id="role">
+    <option value="trainee">연습생</option>
+    <option value="artist">아티스트</option>
+    <option value="manager">매니저</option>
+    <option value="admin">관리자</option>
+  </select>
+  <button id="loginBtn" type="button">로그인</button>
+ </div>
 </div>
 
 <!-- APP -->
 
-<div id="app" class="page">
-<div class="top">
-<span>ENT PORTAL</span>
-<span id="role"></span>
-</div>
+<div id="app">
+<header id="topTitle"></header>
 
-<!-- HOME -->
+<nav>
+ <button onclick="openTab('chat')" class="active">채팅</button>
+ <button onclick="openTab('board')">커뮤니티</button>
+ <button onclick="openTab('diary')">일기</button>
+ <button onclick="openTab('files')">자료실</button>
+</nav>
 
-<div id="home" class="tab active">
-<div class="widget">
-<div>접속 <span id="online">0</span></div>
-<div>메시지 <span id="msgTotal">0</span></div>
-</div>
-<h3>공지</h3>
-<div id="noticeList"></div>
-</div>
+<section id="chat" class="active">
+ <div class="chat-box" id="chatBox"></div>
+ <div class="input-bar">
+  <input id="chatInput" placeholder="메시지 입력">
+  <button onclick="sendChat()">전송</button>
+ </div>
+</section>
 
-<!-- CHAT -->
+<section id="board">
+ <div id="postList"></div>
+ <input id="postInput" placeholder="글 작성">
+ <button onclick="addPost()">등록</button>
+</section>
 
-<div id="chat" class="tab">
-<select id="roomSel"></select>
-<div id="chatBox"></div>
-<div class="inputBar">
-<input id="chatInput" placeholder="메시지">
-<button onclick="sendChat()">전송</button>
-</div>
-</div>
+<section id="diary">
+ <textarea id="diaryText" style="width:100%;height:70%"></textarea>
+ <button onclick="saveDiary()">저장</button>
+</section>
 
-<!-- COMMUNITY -->
-
-<div id="community" class="tab">
-<textarea id="postInput" placeholder="게시글" style="width:100%;height:80px"></textarea>
-<button onclick="addPost()">등록</button>
-<div id="postList"></div>
-</div>
-
-<!-- FILE BOARD -->
-
-<div id="files" class="tab">
-<input type="file" id="fileUpload">
-<button onclick="uploadFile()">업로드</button>
-<div id="fileList"></div>
-</div>
-
-<!-- DIARY -->
-
-<div id="diary" class="tab">
-<textarea id="diaryInput" placeholder="연습 일기" style="width:100%;height:80px"></textarea>
-<button onclick="saveDiary()">저장</button>
-<div id="diaryList"></div>
-</div>
-
-<!-- CALENDAR -->
-
-<div id="calendar" class="tab">
-<input type="date" id="calDate">
-<input id="calText" placeholder="스케줄">
-<button onclick="addSchedule()">추가</button>
-<div id="calList"></div>
-</div>
-
-<!-- ADMIN -->
-
-<div id="admin" class="tab">
-<h3>관리자 패널</h3>
-<textarea id="noticeInput" placeholder="공지"></textarea>
-<button onclick="addNotice()">공지등록</button>
-<h4>유저</h4>
-<div id="userList"></div>
-<h4>로그</h4>
-<div id="logList"></div>
-</div>
-
-<!-- NAV -->
-
-<div class="bottom">
-<button onclick="openTab('home')">🏠</button>
-<button onclick="openTab('chat')">💬 <span id="chatBadge" class="badge">0</span></button>
-<button onclick="openTab('community')">📰</button>
-<button onclick="openTab('files')">📂</button>
-<button onclick="openTab('diary')">📓</button>
-<button onclick="openTab('calendar')">📆</button>
-<button onclick="openTab('admin')">⚙</button>
-</div>
+<section id="files">
+ <input type="file" id="fileInput">
+ <button onclick="uploadFile()">업로드</button>
+ <div id="fileList"></div>
+</section>
 </div>
 
 <script>
-const COMPANY='12345';
-const ADMIN='9999';
+let currentUser=null;
+let currentRole=null;
 
-let user="";
-let avatar="";
-let roleRank="";
-let isAdmin=false;
-let unread=0;
+const loginBtn=document.getElementById('loginBtn');
+const nameInput=document.getElementById('name');
+const codeInput=document.getElementById('code');
+const roleInput=document.getElementById('role');
 
-const DB={
- chats:JSON.parse(localStorage.getItem('chats'))||[],
- posts:JSON.parse(localStorage.getItem('posts'))||[],
- diary:JSON.parse(localStorage.getItem('diary'))||[],
- notice:JSON.parse(localStorage.getItem('notice'))||[],
- users:JSON.parse(localStorage.getItem('users'))||[],
- schedule:JSON.parse(localStorage.getItem('schedule'))||[],
- files:JSON.parse(localStorage.getItem('files'))||[],
- logs:JSON.parse(localStorage.getItem('logs'))||[],
- rooms:['ALL','TEAM','DM']
+loginBtn.onclick=(e)=>{
+ e.preventDefault();
+
+ const username=nameInput.value.trim();
+ const access=codeInput.value.trim();
+ const role=roleInput.value;
+
+ if(!username){alert('이름을 입력하세요');return;}
+ if(access!=='12345'){alert('접속 코드 오류');return;}
+
+ currentUser=username;
+ currentRole=role;
+
+ localStorage.setItem('user',username);
+ localStorage.setItem('role',role);
+
+ document.getElementById('loginScreen').style.display='none';
+ document.getElementById('app').style.display='flex';
+
+ document.getElementById('topTitle').innerText=`${username} (${role})`;
+ loadDiary();
+ loadPosts();
+ loadFiles();
 }
 
-function save(){Object.keys(DB).forEach(k=>localStorage.setItem(k,JSON.stringify(DB[k])))}
-
-function log(t){DB.logs.unshift(new Date().toLocaleTimeString()+" - "+t);save()}
-
-function login(){
- if(code.value!==COMPANY && code.value!==ADMIN) return alert('CODE ERROR');
- if(!name.value) return alert('NAME');
- isAdmin=(code.value===ADMIN);
- user=name.value;
- roleRank=rank.value;
-
- if(img.files[0]){
-  const r=new FileReader();
-  r.onload=()=>{avatar=r.result;finish()}
-  r.readAsDataURL(img.files[0]);
- } else finish();
+function openTab(id){
+ document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+ event.target.classList.add('active');
 }
 
-function finish(){
- login.classList.remove('active');
- app.classList.add('active');
- role.innerText=isAdmin?'ADMIN':roleRank.toUpperCase();
- DB.users.push({name:user,rank:roleRank});
- log(user+' LOGIN ('+roleRank+')');
- save();
- roomSel.innerHTML='';
- DB.rooms.forEach(r=>roomSel.innerHTML+=`<option>${r}</option>`);
- renderAll();
-}
-
-function openTab(t){document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.getElementById(t).classList.add('active');if(t==='chat'){unread=0;chatBadge.innerText=0}}
-
+// CHAT
 function sendChat(){
- const m=chatInput.value;
- if(!m) return;
- DB.chats.push({room:roomSel.value,user,text:m,avatar,time:new Date().toLocaleTimeString()});
- log('CHAT:'+user);
- save();
- chatInput.value='';
- renderChat();
+ const input=document.getElementById('chatInput');
+ const msg=input.value.trim();
+ if(!msg)return;
+
+ const box=document.createElement('div');
+ box.className='bubble me';
+ box.innerText=msg;
+ document.getElementById('chatBox').appendChild(box);
+ input.value='';
 }
 
-function renderChat(){
- chatBox.innerHTML='';
- DB.chats.filter(c=>c.room===roomSel.value).forEach(c=>{
-  const d=document.createElement('div');
-  if(c.user===user){d.className='bubble me';d.innerHTML=`${c.text}<div class=time>읽음 ${c.time}</div>`}
-  else{d.className='bubble other';d.innerHTML=`${c.avatar?`<img src='${c.avatar}' class=avatar>`:''}<b>${c.user}</b><br>${c.text}<div class=time>${c.time}</div>`;unread++}
-  chatBox.appendChild(d);
+// COMMUNITY
+function addPost(){
+ const text=document.getElementById('postInput').value.trim();
+ if(!text)return;
+ const posts=JSON.parse(localStorage.getItem('posts')||'[]');
+ posts.push({user:currentUser,text});
+ localStorage.setItem('posts',JSON.stringify(posts));
+ document.getElementById('postInput').value='';
+ loadPosts();
+}
+
+function loadPosts(){
+ const list=document.getElementById('postList');
+ list.innerHTML='';
+ const posts=JSON.parse(localStorage.getItem('posts')||'[]');
+ posts.forEach(p=>{
+  const div=document.createElement('div');
+  div.className='post';
+  div.innerHTML=`<b>${p.user}</b><br>${p.text}`;
+  list.appendChild(div);
  });
- chatBadge.innerText=unread;
- msgTotal.innerText=DB.chats.length;
- online.innerText=DB.users.length;
- chatBox.scrollTop=chatBox.scrollHeight;
 }
 
-function addPost(){if(!postInput.value)return;DB.posts.unshift({u:user,t:postInput.value});log('POST:'+user);save();postInput.value='';renderPost()}
-function renderPost(){postList.innerHTML='';DB.posts.forEach(p=>postList.innerHTML+=`<div class=card><b>${p.u}</b><br>${p.t}</div>`)}
+// DIARY
+function saveDiary(){
+ localStorage.setItem('diary_'+currentUser,document.getElementById('diaryText').value);
+ alert('저장 완료');
+}
 
+function loadDiary(){
+ document.getElementById('diaryText').value=localStorage.getItem('diary_'+currentUser)||'';
+}
+
+// FILE BOARD
 function uploadFile(){
- const f=fileUpload.files[0];
- if(!f)return;
- const r=new FileReader();
- r.onload=()=>{
-  DB.files.unshift({u:user,name:f.name,data:r.result});
-  log('FILE:'+user);
-  save();
-  renderFiles();
+ const file=document.getElementById('fileInput').files[0];
+ if(!file)return;
+ const files=JSON.parse(localStorage.getItem('files')||'[]');
+ files.push({name:file.name,by:currentUser});
+ localStorage.setItem('files',JSON.stringify(files));
+ loadFiles();
+}
+
+function loadFiles(){
+ const list=document.getElementById('fileList');
+ list.innerHTML='';
+ const files=JSON.parse(localStorage.getItem('files')||'[]');
+ files.forEach(f=>{
+  const div=document.createElement('div');
+  div.className='file-item';
+  div.innerHTML=`${f.name} <span class='badge'>${f.by}</span>`;
+  list.appendChild(div);
+ });
+}
+
+// AUTO LOGIN
+window.onload=()=>{
+ const saved=localStorage.getItem('user');
+ const role=localStorage.getItem('role');
+ if(saved){
+  currentUser=saved;
+  currentRole=role;
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('app').style.display='flex';
+  document.getElementById('topTitle').innerText=`${saved} (${role})`;
+  loadDiary();
+  loadPosts();
+  loadFiles();
  }
- r.readAsDataURL(f);
 }
-
-function renderFiles(){
- fileList.innerHTML='';
- DB.files.forEach(f=>{
-  fileList.innerHTML+=`<div class='card fileItem'><b>${f.u}</b><br>${f.name}<br>${f.data.startsWith('data:image')?`<img src='${f.data}'>`:`<a href='${f.data}' download='${f.name}'>다운로드</a>`}</div>`;
- })
-}
-
-function saveDiary(){if(!diaryInput.value)return;DB.diary.unshift({d:new Date().toLocaleDateString(),t:diaryInput.value});log('DIARY:'+user);save();diaryInput.value='';renderDiary()}
-function renderDiary(){diaryList.innerHTML='';DB.diary.forEach(d=>diaryList.innerHTML+=`<div class=card><b>${d.d}</b><br>${d.t}</div>`)}
-
-function addSchedule(){if(!calDate.value||!calText.value)return;DB.schedule.unshift({d:calDate.value,t:calText.value});log('SCHEDULE:'+user);save();renderSchedule()}
-function renderSchedule(){calList.innerHTML='';DB.schedule.forEach(s=>calList.innerHTML+=`<div class=calendarDay>${s.d} - ${s.t}</div>`)}
-
-function addNotice(){if(!isAdmin)return alert('ADMIN ONLY');if(!noticeInput.value)return;DB.notice.unshift(noticeInput.value);log('NOTICE');save();noticeInput.value='';renderNotice()}
-function renderNotice(){noticeList.innerHTML='';DB.notice.forEach(n=>noticeList.innerHTML+=`<div class=card>${n}</div>`)}
-
-function renderUsers(){userList.innerHTML='';DB.users.forEach((u,i)=>userList.innerHTML+=`<div class=card>${u.name} (${u.rank}) <button class=adminBtn onclick=kick(${i})>차단</button></div>`)}
-function kick(i){if(!isAdmin)return;log('KICK:'+DB.users[i].name);DB.users.splice(i,1);save();renderUsers()}
-
-function renderLog(){logList.innerHTML='';DB.logs.forEach(l=>logList.innerHTML+=`<div class=card>${l}</div>`)}
-
-function renderAll(){renderChat();renderPost();renderFiles();renderDiary();renderNotice();renderUsers();renderSchedule();renderLog()}
 </script>
 
 </body>
 </html>
+
